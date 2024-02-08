@@ -23,6 +23,7 @@ const typeDefs = `
     
     type Query {
         users: [User]!
+        getSingleUser(username: String, _id: String): User
         me: User
     }
     

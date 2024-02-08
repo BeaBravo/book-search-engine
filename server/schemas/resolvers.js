@@ -7,6 +7,12 @@ const resolvers = {
             return User.find().populate('savedBooks')
         },
 
+        getSingleUser: async (parent, { username }) => {
+            const foundUser = await User.findOne({ username: username })
+
+            return foundUser
+        },
+
         me: async (parent, args, context) => {
             if (context.user) {
                 return User.findOne({ _id: context.user._id })
