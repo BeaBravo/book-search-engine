@@ -4,18 +4,20 @@ const { signToken, AuthenticationError } = require('../utils/auth')
 const resolvers = {
     Query: {
         users: async () => {
-            return User.find().populate('savedBooks')
+            return await User.find().populate('savedBooks')
         },
 
         getSingleUser: async (parent, { username }) => {
             const foundUser = await User.findOne({ username: username })
-
+            console.log(foundUser)
             return foundUser
         },
 
         me: async (parent, args, context) => {
+            console.log("context.body", context)
             if (context.user) {
-                return User.findOne({ _id: context.user._id })
+                const user = await User.findOne({ _id: context.user._id })
+                return user
             }
             throw AuthenticationError;
         }
@@ -43,6 +45,6 @@ const resolvers = {
             return { token, user }
         }
     }
-}
+};
 
 module.exports = resolvers;
