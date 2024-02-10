@@ -41,3 +41,33 @@ export const ADD_USER = gql`
       }
     }
   }`
+
+export const SAVE_BOOK = gql`
+  mutation SaveBook($criteria: saveBookInput!) {
+    saveBook(criteria: $criteria) {
+      _id
+      bookCount
+      email
+      username
+      savedBooks {
+        authors
+        bookId
+        description
+        image
+        link
+        title
+      }
+    }
+  }
+`;
+
+export const DELETE_BOOK = gql`
+mutation DeleteBook($bookId: String!) {
+  deleteBook(bookId: $bookId) {
+    _id
+    username
+    bookCount
+    email
+  }
+}
+`;
