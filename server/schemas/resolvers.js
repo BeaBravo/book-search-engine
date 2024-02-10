@@ -51,9 +51,23 @@ const resolvers = {
                     { $addToSet: { savedBooks: criteria } },
                     { new: true, runValidators: true }
                 );
-                return user
+                return updatedUser
             }
             throw AuthenticationError
+        },
+        deleteBook: async (_, { bookId }, context) => {
+            if (context.user) {
+                const user = context.user
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $pull: { savedBooks: { bookId: bookId } } },
+                    { new: true }
+                );
+                return updatedUser
+            }
+            // if no user is found, throw authentication error
+            throw AuthenticationError
+
         }
     }
 };

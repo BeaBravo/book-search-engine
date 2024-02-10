@@ -41,6 +41,7 @@ const typeDefs = `
         createUser(username: String!, email: String!, password: String!): Auth
         login(email: String, username: String, password: String!): Auth
         saveBook(criteria: saveBookInput!): User
+        deleteBook(bookId: String!): User
     }`
 
 module.exports = typeDefs
