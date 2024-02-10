@@ -14,7 +14,6 @@ const resolvers = {
         },
 
         me: async (parent, args, context) => {
-            console.log("context.body", context)
             if (context.user) {
                 const user = await User.findOne({ _id: context.user._id })
                 return user
@@ -43,6 +42,18 @@ const resolvers = {
 
             const token = signToken(user);
             return { token, user }
+        },
+        saveBook: async (_, { criteria }, context) => {
+            if (context.user) {
+                const user = context.user
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $addToSet: { savedBooks: criteria } },
+                    { new: true, runValidators: true }
+                );
+                return user
+            }
+            throw AuthenticationError
         }
     }
 };

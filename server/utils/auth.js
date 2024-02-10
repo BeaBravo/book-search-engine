@@ -29,13 +29,11 @@ module.exports = {
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
-      console.log(data)
     } catch {
       console.log('Invalid token');
     }
 
     // return the request object so it can be passed to the resolver as `context`
-    console.log(req.user)
     return req;
   },
   signToken: function ({ username, email, _id }) {
