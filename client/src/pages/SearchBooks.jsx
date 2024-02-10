@@ -11,6 +11,8 @@ import {
 import Auth from '../utils/auth';
 import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from '../utils/mutations';
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -26,6 +28,7 @@ const SearchBooks = () => {
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
   });
+  const [saveBook, { error }] = useMutation(SAVE_BOOK)
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -63,26 +66,16 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
+    console.log(bookToSave)
+    // use the function saveBook from mutation SAVE_BOOK
+    const data = await saveBook({
+      variables: { criteria: bookToSave }
+    })
+    // console.log(data)
 
-    // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    // setSavedBookIds state 
+    setSavedBookIds([...savedBookIds, bookToSave.bookId]);
 
-    if (!token) {
-      return false;
-    }
-
-    try {
-      const response = await saveBook(bookToSave, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   return (
