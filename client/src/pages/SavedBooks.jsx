@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Container,
   Card,
@@ -6,29 +5,30 @@ import {
   Row,
   Col
 } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
 
 //bring in useQuery and GET_ME query
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 import { DELETE_BOOK } from '../utils/mutations';
 
-import { getMe, deleteBook } from '../utils/API';
-
-import Auth from '../utils/auth';
-import { removeBookId } from '../utils/localStorage';
-
 const SavedBooks = () => {
   // get user info using the useQuery method from apollo/client 
   const { loading, data } = useQuery(GET_ME)
   const userProfile = data?.me
 
+  //use mutation delete_book with the variable book)id, it will refetch query GET_ME to update the page
+  const [deleteBook, { error }] = useMutation(DELETE_BOOK, {
+    refetchQueries: [
+      GET_ME,
+      'Me'
+    ],
+  });
+
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-    //use mutation delete_book with the variable book)id
-    const [deleteBook, { error }] = useMutation(DELETE_BOOK)
+    //use function deleteBook from mutation DELETE_BOOK
     const data = await deleteBook({
-      variables: { bookId }
+      variables: { bookId: bookId }
     })
   };
 
