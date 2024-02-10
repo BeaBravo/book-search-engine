@@ -10,10 +10,6 @@ const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas')
 const db = require('./config/connection');
 
-//this line will be deleted before submitting
-const routes = require('./routes');
-
-
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -33,8 +29,6 @@ const startApolloServer = async () => {
     context: authMiddleware
   }));
 
-  //will be deleted
-  app.use(routes);
 
   // if we're in production, serve client/dist as static assets
   if (process.env.NODE_ENV === 'production') {
