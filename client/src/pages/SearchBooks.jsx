@@ -72,8 +72,7 @@ const SearchBooks = () => {
       variables: { criteria: bookToSave }
     })
     // console.log(data)
-
-    // setSavedBookIds state 
+    // setSavedBookIds state
     setSavedBookIds([...savedBookIds, bookToSave.bookId]);
 
   };
