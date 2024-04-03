@@ -4,7 +4,7 @@
 
 ## Description
 
-This repo was created to take a functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. 
+This repo was created to take a functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo server and client.
 
 
 Link to deployed app: https://book-search-engine-r50l.onrender.com/ 
